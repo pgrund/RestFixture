@@ -129,6 +129,14 @@ public class ContentTypeTest {
         // overrides "default"
         assertEquals(ContentType.TEXT, ContentType.parse("unhandled"));
     }
+    
+    @Test
+    public void shouldReturnCorrectTypeGivenApplicationVndJson() {
+            RestData d = new RestResponse();
+            d.addHeader("Content-Type", "application/vnd.somestrange.test+json");
+
+            assertEquals(ContentType.JSON, ContentType.parse(d.getContentType()));
+    }
 
     private String confMap() {
         StringBuffer configEntry = new StringBuffer();

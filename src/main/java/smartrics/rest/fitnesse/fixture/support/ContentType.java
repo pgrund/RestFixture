@@ -204,7 +204,7 @@ public enum ContentType {
 		}
 		ContentType ret = contentTypeToEnum.get(c);
 		if (ret == null) {
-			return contentTypeToEnum.get("default");
+			return typeFor(c);
 		}
 		return ret;
 	}
