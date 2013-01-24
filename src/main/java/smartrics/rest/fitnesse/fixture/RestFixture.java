@@ -879,9 +879,9 @@ public class RestFixture {
 		String resUrl = GLOBALS.substitute(url);
 		String rBody = GLOBALS.substitute(body);
 		Map<String, String> rHeaders = substitute(getHeaders());
-		try {                        
-			doMethod(method, resUrl, rHeaders, rBody);                        
-			completeHttpMethodExecution();                       
+		try {
+			doMethod(method, resUrl, rHeaders, rBody);
+			completeHttpMethodExecution();
 		} catch (RuntimeException e) {
 			getFormatter().exception(
 					row.getCell(0),
@@ -920,13 +920,7 @@ public class RestFixture {
 			getLastRequest().setBody(rBody);
 		}
 		restClient.setBaseUrl(thisRequestUrlParts[0]);
-                // mesure time spent for http method execution
-                long before = System.currentTimeMillis();
 		RestResponse response = restClient.execute(getLastRequest());
-                if(row.getCell(5) != null){
-                            row.getCell(5).body(getFormatter().gray(
-                                    (System.currentTimeMillis() - before) + " msec"));
-                }                
 		setLastResponse(response);
 	}
 
@@ -957,7 +951,7 @@ public class RestFixture {
 		}
 		bodyCell.body(GLOBALS.substitute(bodyCell.body()));
 		BodyTypeAdapter bodyTypeAdapter = createBodyTypeAdapter();
-		process(bodyCell, getLastResponse().getBody(), bodyTypeAdapter);              
+		process(bodyCell, getLastResponse().getBody(), bodyTypeAdapter);
 	}
 
 	// Split out of completeHttpMethodExecution so RestScriptFixture can call
