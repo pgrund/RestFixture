@@ -123,6 +123,10 @@ import smartrics.rest.fitnesse.fixture.support.Variables;
  * <td><i>boolean value. if true, the actual value of the header or body in an expectation cell is displayed even when the expectation is met.</i></td>
  * </tr>
  * <tr>
+ * <td>restfixture.display.complete.url</td>
+ * <td><i>boolean value. if true, the complete url is displayed and not only the relative ressource path.</i></td>
+ * </tr>
+ * <tr>
  * <td>restfixture.default.headers</td>
  * <td><i>comma separated list of key value pairs representing the default list of headers to be passed for each request. key and values are separated by a
  * colon. Entries are sepatated by \n. {@link RestFixture#setHeader()} will override this value. </i></td>
@@ -210,6 +214,8 @@ public class RestFixture {
 	private Config config;
 
 	private boolean displayActualOnRight;
+        
+        private boolean displayCompleteUrl;
 
 	private boolean debugMethodCall = false;
 
@@ -934,7 +940,11 @@ public class RestFixture {
 		String clientBaseUri = restClient.getBaseUrl();
 		String u = clientBaseUri + uri;
 		CellWrapper uriCell = row.getCell(1);
-		getFormatter().asLink(uriCell, u, uri);
+                if (displayCompleteUrl) {
+                    uriCell.body(getFormatter().gray(uri + "\n-----\n" + u));
+                } else {
+                    getFormatter().asLink(uriCell, u, uri);
+                }
 		CellWrapper cellStatusCode = row.getCell(2);
 		if (cellStatusCode == null) {
 			throw new IllegalStateException(
@@ -1098,6 +1108,8 @@ public class RestFixture {
 		minLenForCollapseToggle = config.getAsInteger(
 				"restfixture.display.toggle.for.cells.larger.than",
 				minLenForCollapseToggle);
+                
+                displayCompleteUrl = config.getAsBoolean("restfixture.display.complete.url", displayCompleteUrl);
 
 		String str = config.get("restfixture.default.headers", "");
 		defaultHeaders = parseHeaders(str);
