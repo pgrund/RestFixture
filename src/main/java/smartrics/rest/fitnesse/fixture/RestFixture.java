@@ -926,7 +926,14 @@ public class RestFixture {
 			getLastRequest().setBody(rBody);
 		}
 		restClient.setBaseUrl(thisRequestUrlParts[0]);
+		// mesure time spent for http method execution
+        long before = System.currentTimeMillis();
 		RestResponse response = restClient.execute(getLastRequest());
+        if (row.getCell(5) != null) {
+            row.getCell(5).body(
+                    getFormatter().gray(
+                            (System.currentTimeMillis() - before) + " msec"));
+        }
 		setLastResponse(response);
 	}
 
